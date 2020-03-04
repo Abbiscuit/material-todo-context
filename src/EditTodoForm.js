@@ -1,9 +1,21 @@
-import React from "react";
+import React, { useContext } from "react";
 import useInputState from "./hooks/useInputState";
 import TextField from "@material-ui/core/TextField";
+import { TodosContext } from "./context/todos.context";
+import { makeStyles } from "@material-ui/core";
 
-const EditTodoForm = ({ id, editTodo, task, toggleEditForm }) => {
+const useStyles = makeStyles(theme => ({
+  form: {
+    marginLeft: "1rem",
+    width: "100%"
+  }
+}));
+
+const EditTodoForm = ({ id, task, toggleEditForm }) => {
+  const classes = useStyles();
+  const { editTodo } = useContext(TodosContext);
   const [value, handleChange, reset] = useInputState(task);
+
   return (
     <form
       onSubmit={e => {
@@ -12,10 +24,7 @@ const EditTodoForm = ({ id, editTodo, task, toggleEditForm }) => {
         reset();
         toggleEditForm();
       }}
-      style={{
-        marginLeft: "1rem",
-        width: "100%"
-      }}
+      className={classes.form}
     >
       <TextField
         margin="normal"
@@ -23,6 +32,7 @@ const EditTodoForm = ({ id, editTodo, task, toggleEditForm }) => {
         onChange={handleChange}
         fullWidth
         autoFocus
+        required
       />
     </form>
   );
